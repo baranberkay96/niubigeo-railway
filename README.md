@@ -1,6 +1,6 @@
 # Deploy and Host NiubiGEO with Railway
 
-[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/niubigeo-ai-brand-visibility-tracker?referralCode=20H68q)
+[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/niubigeo-v03-ai-brand-visibility-tracker?referralCode=20H68q)
 
 NiubiGEO is an open-source (Apache-2.0) GEO research tool. It asks AI models about your domain and your keywords, then shows how they describe you, which competitors they name, the original answers and the sources they returned. This community template runs NiubiGEO v0.3.3 behind a login on its own HTTPS address, with scheduled monitoring and persistent storage.
 
