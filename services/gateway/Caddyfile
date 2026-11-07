@@ -1,0 +1,75 @@
+# NiubiGEO Gateway: the only public entry point to NiubiGEO.
+# NiubiGEO has no login of its own, so the NiubiGEO service stays on Railway's private
+# network and everything except /healthz here needs the basic-auth login.
+#
+# Values come from the environment at start (entrypoint.sh):
+#   PORT, BASIC_AUTH_USERNAME, BASIC_AUTH_HASH (bcrypt), NIUBIGEO_GATEWAY_SESSION_TOKEN, NIUBIGEO_UPSTREAM
+{
+	admin off
+	persist_config off
+	auto_https off
+	servers {
+		# Railway's edge terminates TLS and forwards X-Forwarded-* headers.
+		trusted_proxies static private_ranges 100.0.0.0/8
+	}
+}
+
+:{$PORT:8080} {
+	# Browsers send cached basic-auth credentials with cross-site requests too.
+	# Refuse anything whose Origin is not this site (custom domains included).
+	@cross_site {
+		header Origin *
+		not header Origin https://{host}
+	}
+
+	# Requests without the session cookie set below must log in with basic auth.
+	# The cookie exists because NiubiGEO's "connect a model API key" dialog sends the key
+	# in the Authorization header, which replaces the browser's basic-auth credentials.
+	@needs_login not vars {http.request.cookie.__Host-niubigeo_session} {$NIUBIGEO_GATEWAY_SESSION_TOKEN}
+
+	# NiubiGEO reads any Authorization header as a model API key and rejects "Basic ...",
+	# so basic-auth credentials are removed before the request is passed on.
+	@basic_credentials header_regexp Authorization (?i)^basic
+
+	# Opening the workbench from another site (e.g. the link in the Railway dashboard) is a
+	# top-level navigation marked Sec-Fetch-Site: cross-site, which NiubiGEO answers with 403.
+	# Only for GET / (the page itself); API calls keep the header.
+	@open_workbench {
+		method GET HEAD
+		path /
+		header Sec-Fetch-Mode navigate
+	}
+
+	# Unauthenticated liveness endpoint for Railway's healthcheck (returns no data).
+	handle /healthz {
+		respond "ok" 200
+	}
+
+	handle @cross_site {
+		respond "Cross-origin request refused" 403
+	}
+
+	handle {
+		# route keeps this order: log in first, then set the cookie, then proxy.
+		route {
+			basic_auth @needs_login bcrypt NiubiGEO {
+				{$BASIC_AUTH_USERNAME} {$BASIC_AUTH_HASH}
+			}
+			header {
+				+Set-Cookie "__Host-niubigeo_session={$NIUBIGEO_GATEWAY_SESSION_TOKEN}; Path=/; Max-Age=86400; Secure; HttpOnly; SameSite=Strict"
+				X-Frame-Options SAMEORIGIN
+				X-Content-Type-Options nosniff
+				Referrer-Policy same-origin
+				-Server
+			}
+			request_header @basic_credentials -Authorization
+			request_header @open_workbench -Sec-Fetch-Site
+			encode zstd gzip
+			reverse_proxy {$NIUBIGEO_UPSTREAM}
+		}
+	}
+
+	handle_errors 502 503 504 {
+		respond "NiubiGEO is not reachable yet. After a deploy it can take a few minutes to build and start; reload this page shortly." 502
+	}
+}
