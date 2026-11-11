@@ -1,10 +1,10 @@
-# NiubiGEO v0.3 AI Brand Visibility Tracker (GEO): Railway template spec
+# NiubiGEO AI Brand Visibility Tracker (GEO): Railway template spec
 
 ## Listing
 
 | Field | Value |
 |---|---|
-| Name | **NiubiGEO v0.3 AI Brand Visibility Tracker (GEO)** ("v0.3" = major.minor of the pinned 0.x release v0.3.3) |
+| Name | **NiubiGEO AI Brand Visibility Tracker (GEO)** ("v0.3" = major.minor of the pinned 0.x release v0.3.3) |
 | Description | See how AI models describe your brand and competitors, with evidence. (69 chars) |
 | Category | Analytics |
 | Tags | niubigeo, geo, generative-engine-optimization, ai-visibility, brand-monitoring, competitor-analysis, seo, llm, openrouter, self-hosted |

@@ -1,159 +1,160 @@
 {
- "name": "NiubiGEO v0.3 AI Brand Visibility Tracker (GEO)",
- "description": "See how AI models describe your brand and competitors, with evidence.",
- "category": "Analytics",
- "tags": [
-  "niubigeo",
-  "geo",
-  "generative-engine-optimization",
-  "ai-visibility",
-  "brand-monitoring",
-  "competitor-analysis",
-  "seo",
-  "llm",
-  "openrouter",
-  "self-hosted"
- ],
- "image": "https://cdn.jsdelivr.net/gh/Albert-Weasker/niubigeo@v0.3.3/assets/brand/niubigeo-emblem-light.svg",
- "upstream": {
-  "repo": "Albert-Weasker/niubigeo",
-  "version": "v0.3.3 (commit 6f0eeeb11b4319e845b491a5067d2cfdc8d07b52; image ghcr.io/albert-weasker/niubigeo:v0.3.3, index digest sha256:5950b779edc0de9c3e869cdbbb6166a8053e0e7c209f7d00a8ca680d43c5841f, created 2026-11-03)",
-  "checked": "2026-11-07"
- },
- "services": {
-  "NiubiGEO": {
-   "icon": "https://cdn.jsdelivr.net/gh/Albert-Weasker/niubigeo@v0.3.3/assets/brand/niubigeo-emblem-light.svg",
-   "source": {
-    "repo": "baranberkay96/niubigeo-railway",
-    "rootDirectory": "/services/niubigeo"
-   },
-   "startCommand": null,
-   "preDeployCommand": null,
-   "healthcheckPath": "/health",
-   "healthcheckTimeout": 600,
-   "restartPolicyType": "ON_FAILURE",
-   "restartPolicyMaxRetries": 10,
-   "numReplicas": 1,
-   "cronSchedule": null,
-   "publicDomain": false,
-   "targetPort": null,
-   "tcpProxy": null,
-   "volume": {
-    "mountPath": "/app/data"
-   },
-   "variables": {
-    "OPENROUTER_API_KEY": {
-     "defaultValue": "",
-     "description": "Recommended. OpenRouter key (openrouter.ai/keys) for the workbench and scheduled runs. Empty: connect a key in the browser per session.",
-     "required": false
-    },
-    "PORT": {
-     "defaultValue": "8787",
-     "description": "Port the workbench listens on; Railway's healthcheck (/health) and the gateway use it.",
-     "required": false
-    },
-    "HOST": {
-     "defaultValue": "::",
-     "description": "Bind address. :: listens on IPv4 and IPv6 of the private network (Node is dual-stack).",
-     "required": false
-    },
-    "MONITORING_DATA_DIR": {
-     "defaultValue": "/app/data",
-     "description": "Data root on the volume: product data, worker status, pre-upgrade snapshots (backups/).",
-     "required": false
-    },
-    "PRODUCT_DATA_DIR": {
-     "defaultValue": "/app/data/product-v2",
-     "description": "Projects, model settings, runs, raw answers and evidence (JSON files). Keep it inside /app/data.",
-     "required": false
-    },
-    "NIUBIGEO_WORKER_ENABLED": {
-     "defaultValue": "true",
-     "description": "Run the scheduling worker for schedules and keyword monitors. Due runs call models and cost API credits; false turns it off.",
-     "required": false
-    },
-    "NIUBIGEO_WORKER_POLL_SECONDS": {
-     "defaultValue": "60",
-     "description": "How often the worker looks for due runs, in seconds (10 or more).",
-     "required": false
-    },
-    "NIUBIGEO_VIDEO_ADVISOR_ENABLED": {
-     "defaultValue": "false",
-     "description": "true shows upstream's advisor card, a link to the NiubiGEO team's external service. Off by default.",
-     "required": false
-    },
-    "NIUBIGEO_ALLOW_LOCAL_PROVIDERS": {
-     "defaultValue": "false",
-     "description": "true allows http and private-network model endpoints, e.g. an Ollama service in this project. Only for trusted users.",
-     "required": false
-    },
-    "NIUBIGEO_SNAPSHOT_KEEP": {
-     "defaultValue": "3",
-     "description": "Pre-upgrade snapshots kept in /app/data/backups (a copy is saved when the NiubiGEO version changes). 0 disables them.",
-     "required": false
-    },
-    "RAILWAY_DEPLOYMENT_DRAINING_SECONDS": {
-     "defaultValue": "60",
-     "description": "Seconds between stop signal and kill on redeploy, so a running monitoring cycle can finish.",
-     "required": false
-    },
-    "NIUBIGEO_IMAGE": {
-     "defaultValue": "ghcr.io/albert-weasker/niubigeo:v0.3.3@sha256:5950b779edc0de9c3e869cdbbb6166a8053e0e7c209f7d00a8ca680d43c5841f",
-     "description": "NiubiGEO image used as the build base (tag + digest). Change it and redeploy to upgrade; a snapshot is saved first.",
-     "required": false
-    }
-   }
+  "name": "NiubiGEO AI Brand Visibility Tracker (GEO)",
+  "idSeed": "NiubiGEO v0.3 AI Brand Visibility Tracker (GEO)",
+  "description": "See how AI models describe your brand and competitors, with evidence.",
+  "category": "Analytics",
+  "tags": [
+    "niubigeo",
+    "geo",
+    "generative-engine-optimization",
+    "ai-visibility",
+    "brand-monitoring",
+    "competitor-analysis",
+    "seo",
+    "llm",
+    "openrouter",
+    "self-hosted"
+  ],
+  "image": "https://cdn.jsdelivr.net/gh/Albert-Weasker/niubigeo@v0.3.3/assets/brand/niubigeo-emblem-light.svg",
+  "upstream": {
+    "repo": "Albert-Weasker/niubigeo",
+    "version": "v0.3.3 (commit 6f0eeeb11b4319e845b491a5067d2cfdc8d07b52; image ghcr.io/albert-weasker/niubigeo:v0.3.3, index digest sha256:5950b779edc0de9c3e869cdbbb6166a8053e0e7c209f7d00a8ca680d43c5841f, created 2026-11-03)",
+    "checked": "2026-11-07"
   },
-  "NiubiGEO Gateway": {
-   "icon": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/caddy.svg",
-   "source": {
-    "repo": "baranberkay96/niubigeo-railway",
-    "rootDirectory": "/services/gateway"
-   },
-   "startCommand": null,
-   "preDeployCommand": null,
-   "healthcheckPath": "/healthz",
-   "healthcheckTimeout": 300,
-   "restartPolicyType": "ON_FAILURE",
-   "restartPolicyMaxRetries": 10,
-   "numReplicas": 1,
-   "cronSchedule": null,
-   "publicDomain": true,
-   "targetPort": 8080,
-   "tcpProxy": null,
-   "volume": null,
-   "variables": {
-    "PORT": {
-     "defaultValue": "8080",
-     "description": "Port the gateway listens on; the public domain and the healthcheck (/healthz) use it.",
-     "required": false
+  "services": {
+    "NiubiGEO": {
+      "icon": "https://cdn.jsdelivr.net/gh/Albert-Weasker/niubigeo@v0.3.3/assets/brand/niubigeo-emblem-light.svg",
+      "source": {
+        "repo": "baranberkay96/niubigeo-railway",
+        "rootDirectory": "/services/niubigeo"
+      },
+      "startCommand": null,
+      "preDeployCommand": null,
+      "healthcheckPath": "/health",
+      "healthcheckTimeout": 600,
+      "restartPolicyType": "ON_FAILURE",
+      "restartPolicyMaxRetries": 10,
+      "numReplicas": 1,
+      "cronSchedule": null,
+      "publicDomain": false,
+      "targetPort": null,
+      "tcpProxy": null,
+      "volume": {
+        "mountPath": "/app/data"
+      },
+      "variables": {
+        "OPENROUTER_API_KEY": {
+          "defaultValue": "",
+          "description": "Recommended. OpenRouter key (openrouter.ai/keys) for the workbench and scheduled runs. Empty: connect a key in the browser per session.",
+          "required": false
+        },
+        "PORT": {
+          "defaultValue": "8787",
+          "description": "Port the workbench listens on; Railway's healthcheck (/health) and the gateway use it.",
+          "required": false
+        },
+        "HOST": {
+          "defaultValue": "::",
+          "description": "Bind address. :: listens on IPv4 and IPv6 of the private network (Node is dual-stack).",
+          "required": false
+        },
+        "MONITORING_DATA_DIR": {
+          "defaultValue": "/app/data",
+          "description": "Data root on the volume: product data, worker status, pre-upgrade snapshots (backups/).",
+          "required": false
+        },
+        "PRODUCT_DATA_DIR": {
+          "defaultValue": "/app/data/product-v2",
+          "description": "Projects, model settings, runs, raw answers and evidence (JSON files). Keep it inside /app/data.",
+          "required": false
+        },
+        "NIUBIGEO_WORKER_ENABLED": {
+          "defaultValue": "true",
+          "description": "Run the scheduling worker for schedules and keyword monitors. Due runs call models and cost API credits; false turns it off.",
+          "required": false
+        },
+        "NIUBIGEO_WORKER_POLL_SECONDS": {
+          "defaultValue": "60",
+          "description": "How often the worker looks for due runs, in seconds (10 or more).",
+          "required": false
+        },
+        "NIUBIGEO_VIDEO_ADVISOR_ENABLED": {
+          "defaultValue": "false",
+          "description": "true shows upstream's advisor card, a link to the NiubiGEO team's external service. Off by default.",
+          "required": false
+        },
+        "NIUBIGEO_ALLOW_LOCAL_PROVIDERS": {
+          "defaultValue": "false",
+          "description": "true allows http and private-network model endpoints, e.g. an Ollama service in this project. Only for trusted users.",
+          "required": false
+        },
+        "NIUBIGEO_SNAPSHOT_KEEP": {
+          "defaultValue": "3",
+          "description": "Pre-upgrade snapshots kept in /app/data/backups (a copy is saved when the NiubiGEO version changes). 0 disables them.",
+          "required": false
+        },
+        "RAILWAY_DEPLOYMENT_DRAINING_SECONDS": {
+          "defaultValue": "60",
+          "description": "Seconds between stop signal and kill on redeploy, so a running monitoring cycle can finish.",
+          "required": false
+        },
+        "NIUBIGEO_IMAGE": {
+          "defaultValue": "ghcr.io/albert-weasker/niubigeo:v0.3.3@sha256:5950b779edc0de9c3e869cdbbb6166a8053e0e7c209f7d00a8ca680d43c5841f",
+          "description": "NiubiGEO image used as the build base (tag + digest). Change it and redeploy to upgrade; a snapshot is saved first.",
+          "required": false
+        }
+      }
     },
-    "BASIC_AUTH_USERNAME": {
-     "defaultValue": "admin",
-     "description": "Login name for NiubiGEO (A-Z a-z 0-9 . _ -).",
-     "required": false
-    },
-    "BASIC_AUTH_PASSWORD": {
-     "defaultValue": "${{secret(32, \"abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789\")}}",
-     "description": "Login password, generated at deploy (16+ characters). Hashed with bcrypt at start. Change and redeploy to rotate.",
-     "required": false
-    },
-    "NIUBIGEO_GATEWAY_SESSION_SECRET": {
-     "defaultValue": "${{secret(48, \"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789\")}}",
-     "description": "Signs the gateway's session cookie (32+ characters). Changing it signs everyone out.",
-     "required": false
-    },
-    "NIUBIGEO_UPSTREAM": {
-     "defaultValue": "${{NiubiGEO.RAILWAY_PRIVATE_DOMAIN}}:${{NiubiGEO.PORT}}",
-     "description": "NiubiGEO on the private network; this gateway is its only public entry point.",
-     "required": false
-    },
-    "NIUBIGEO_URL": {
-     "defaultValue": "https://${{RAILWAY_PUBLIC_DOMAIN}}",
-     "description": "Open this and log in with BASIC_AUTH_USERNAME and BASIC_AUTH_PASSWORD.",
-     "required": false
+    "NiubiGEO Gateway": {
+      "icon": "https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/caddy.svg",
+      "source": {
+        "repo": "baranberkay96/niubigeo-railway",
+        "rootDirectory": "/services/gateway"
+      },
+      "startCommand": null,
+      "preDeployCommand": null,
+      "healthcheckPath": "/healthz",
+      "healthcheckTimeout": 300,
+      "restartPolicyType": "ON_FAILURE",
+      "restartPolicyMaxRetries": 10,
+      "numReplicas": 1,
+      "cronSchedule": null,
+      "publicDomain": true,
+      "targetPort": 8080,
+      "tcpProxy": null,
+      "volume": null,
+      "variables": {
+        "PORT": {
+          "defaultValue": "8080",
+          "description": "Port the gateway listens on; the public domain and the healthcheck (/healthz) use it.",
+          "required": false
+        },
+        "BASIC_AUTH_USERNAME": {
+          "defaultValue": "admin",
+          "description": "Login name for NiubiGEO (A-Z a-z 0-9 . _ -).",
+          "required": false
+        },
+        "BASIC_AUTH_PASSWORD": {
+          "defaultValue": "${{secret(32, \"abcdefghijkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789\")}}",
+          "description": "Login password, generated at deploy (16+ characters). Hashed with bcrypt at start. Change and redeploy to rotate.",
+          "required": false
+        },
+        "NIUBIGEO_GATEWAY_SESSION_SECRET": {
+          "defaultValue": "${{secret(48, \"abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789\")}}",
+          "description": "Signs the gateway's session cookie (32+ characters). Changing it signs everyone out.",
+          "required": false
+        },
+        "NIUBIGEO_UPSTREAM": {
+          "defaultValue": "${{NiubiGEO.RAILWAY_PRIVATE_DOMAIN}}:${{NiubiGEO.PORT}}",
+          "description": "NiubiGEO on the private network; this gateway is its only public entry point.",
+          "required": false
+        },
+        "NIUBIGEO_URL": {
+          "defaultValue": "https://${{RAILWAY_PUBLIC_DOMAIN}}",
+          "description": "Open this and log in with BASIC_AUTH_USERNAME and BASIC_AUTH_PASSWORD.",
+          "required": false
+        }
+      }
     }
-   }
   }
- }
 }
